@@ -1,0 +1,33 @@
+name: Build Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Windows
+        run: node scripts/build-win.js
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: factory-brain-win
+          path: |
+            dist/**
+            out/**
+            release/**
