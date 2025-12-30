@@ -16,3 +16,14 @@ process.on("uncaughtException", (err) => {
 process.on("unhandledRejection", (reason) => {
   log("unhandledRejection:", reason?.stack || reason?.message || String(reason));
 });
+app.on("before-quit", async () => {
+  try {
+    const { stop } = require("./orchestrator");
+    await Promise.resolve(stop());
+  } catch {}
+});
+
+app.on("window-all-closed", () => {
+  // 🔥 quan trọng: đóng cửa sổ là thoát hẳn (Windows)
+  app.quit();
+});
