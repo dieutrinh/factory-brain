@@ -1,41 +1,36 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, dialog } = require("electron");
 const path = require("path");
-const { spawnCore, stopCore, CORE_PORT } = require("./orchestrator");
 
 let mainWindow;
 
-function createWindow(){
+function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
-    height: 780,
+    height: 800,
+    show: true,              // 🔑 luôn show
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      contextIsolation: true,
-      nodeIntegration: false
-    }
+    },
   });
-  mainWindow.loadFile(path.join(__dirname, "renderer", "index.html"));
+
+  const indexHtml = path.join(__dirname, "renderer", "index.html");
+
+  mainWindow.loadFile(indexHtml).catch(err => {
+    dialog.showErrorBox(
+      "FactoryBrain v2 – Load Error",
+      err.message || String(err)
+    );
+  });
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
 }
 
-app.whenReady().then(async () => {
-  await spawnCore();
+app.whenReady().then(() => {
   createWindow();
 });
 
-app.on("window-all-closed", async () => {
-  await stopCore();
-  app.quit();
-});
-
-ipcMain.handle("core:getPort", () => CORE_PORT);
-
-ipcMain.handle("dialog:openJobJson", async () => {
-  const r = await dialog.showOpenDialog({ properties:["openFile"], filters:[{name:"Job JSON", extensions:["json"]}] });
-  if (r.canceled || !r.filePaths?.[0]) return { ok:false };
-  return { ok:true, path: r.filePaths[0] };
-});
-
-ipcMain.handle("fs:readText", async (evt, filePath) => {
-  const fs = require("fs");
-  return fs.readFileSync(filePath, "utf-8");
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
 });
