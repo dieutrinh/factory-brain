@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>FactoryBrain v2 — Dashboard</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; connect-src http://127.0.0.1:*;">
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 0; background: #0b0c10; color: #eaf0ff; }
+    header { padding: 14px 18px; background: #11131b; border-bottom: 1px solid #1f2433; display:flex; align-items:center; gap:12px; }
+    .badge { padding: 2px 8px; border: 1px solid #2a3146; border-radius: 999px; color:#cfe1ff; font-size:12px; }
+    main { padding: 18px; display:grid; grid-template-columns: 380px 1fr; gap: 14px; }
+    .card { background:#11131b; border:1px solid #1f2433; border-radius: 14px; padding: 14px; }
+    button { background:#1e66ff; color:white; border:0; padding:10px 12px; border-radius: 12px; cursor:pointer; font-weight:600; }
+    button.secondary { background: transparent; border:1px solid #2a3146; color:#eaf0ff; }
+    textarea { width: 100%; background:#0b0c10; border:1px solid #2a3146; color:#eaf0ff; border-radius: 10px; padding:10px; }
+    .row { display:flex; gap:10px; }
+    .row > * { flex:1; }
+    pre { white-space: pre-wrap; word-break: break-word; background:#0b0c10; border:1px solid #2a3146; border-radius: 10px; padding:10px; margin:0; }
+    .kpi { display:flex; gap:10px; flex-wrap: wrap; }
+    .kpi .pill { border:1px solid #2a3146; border-radius: 12px; padding:8px 10px; }
+    .muted { color:#a8b3cf; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="font-size:16px;font-weight:800;">FactoryBrain v2</div>
+    <span class="badge" id="coreStatus">core: ...</span>
+    <span class="badge" id="jobStatus">job: none</span>
+    <div style="margin-left:auto" class="muted">Electron orchestration • local core service</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h3 style="margin:0 0 10px;">Job Manager</h3>
+      <div class="row" style="margin-bottom:10px;">
+        <button id="btnNew">New Job</button>
+        <button class="secondary" id="btnOpen">Open job.json</button>
+      </div>
+      <label class="muted">Job JSON</label>
+      <textarea id="jobJson" rows="10"></textarea>
+      <div class="row" style="margin-top:10px;">
+        <button id="btnOptimize">Optimize Layout</button>
+        <button id="btnTrust" class="secondary">Trust Score</button>
+      </div>
+      <div class="row" style="margin-top:10px;">
+        <button id="btnPreview" class="secondary">Preview Mode</button>
+        <button id="btnRip">RIP Export</button>
+      </div>
+      <p class="muted" style="margin-top:10px;">
+        Test without UXP: edit job JSON and run the steps.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3 style="margin:0 0 10px;">Results</h3>
+      <div class="kpi" style="margin-bottom:10px;">
+        <div class="pill">Trust: <b id="trustScore">—</b></div>
+        <div class="pill">Grade: <b id="trustGrade">—</b></div>
+        <div class="pill">Preview: <b id="previewMode">—</b></div>
+      </div>
+      <pre id="out"></pre>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

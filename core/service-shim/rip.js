@@ -1,0 +1,1 @@
+const fs=require('fs'); const path=require('path'); module.exports.ripExport=(jobDir,payload)=>{const outDir=path.join(jobDir,'output','rip'); fs.mkdirSync(outDir,{recursive:true}); fs.writeFileSync(path.join(outDir,'rip.json'),JSON.stringify(payload,null,2),'utf-8'); return {ok:true,outDir};};

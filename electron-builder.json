@@ -1,0 +1,39 @@
+{
+  "appId": "com.factorybrain.v2",
+  "productName": "FactoryBrain v2",
+  "directories": {
+    "output": "dist"
+  },
+  "files": [
+    "**/*",
+    "!dist/**",
+    "!runtime/jobs/**",
+    "!**/*.zip"
+  ],
+  "extraResources": [
+    {
+      "from": "runtime",
+      "to": "runtime"
+    }
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      },
+      {
+        "target": "zip",
+        "arch": [
+          "x64"
+        ]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  }
+}
