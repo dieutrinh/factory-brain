@@ -1,14 +1,11 @@
 // electron/orchestrator.js
-// Safe mode: DO NOT spawn any child processes.
-// This prevents infinite spawning / background zombies.
+// SAFE MODE – không spawn core, không fork, không exec
 
 async function start() {
-  // no-op
   return true;
 }
 
 async function stop() {
-  // no-op
   return true;
 }
 
